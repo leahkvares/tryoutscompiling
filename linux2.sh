@@ -71,7 +71,8 @@ if [ -f "$SEC" ]; then
     sed -i 's/^[[:space:]]*ServerSignature.*/ServerSignature On/' "$SEC"
 fi
 
-cat >> /etc/apache2/apache2.conf << EOF
+if ! grep -q "Options Indexes FollowSymLinks" /etc/apache2/apache2.conf 2>/dev/null; then
+    cat >> /etc/apache2/apache2.conf << 'EOF'
 <Directory /var/www/html>
     Options Indexes FollowSymLinks
     AllowOverride All
